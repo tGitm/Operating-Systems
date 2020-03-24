@@ -1,0 +1,103 @@
+Naloge (1)
+
+1.	Prijavite se v vsaj tri konzole (poskusite se prijaviti tudi z napačnim geslom ali neobstoječim uporabnikom)! 
+	ctrl+alt+F1
+	ctrl+alt+F2
+	ctrl+alt+F3
+	da prideš nazaj napišeš
+	ctrl+alt+F7
+
+2.	Izpišite, kateri uporabniki so trenutno prijavljeni!
+	w, users
+
+3.	Kako izpišete samo podatke o vaši prijavi na konzoli, v kateri trenutno pišete ukaze?
+	whoami
+	
+4.	Izpišite, seznam zadnjih desetih prijav v sistem!
+	last -n 10
+
+5.	Izpišite, seznam vseh uporabnikov, ki so registrirani v sistemu!
+	cat /etc/passwd
+
+6.	Kakšna imajo gesla?
+	sudo cat /etc/shadow
+
+7.	Izpišite seznam vseh uporabnikov, vendar izpišite samo uporabnikovo uporabniško ime in domači imenik!
+	cat /etc/passwd | cut -d: -f1,6
+	d - kaj je ločnica (v našem primeru :)
+	f - izpiši prvi in šesti stolpec
+
+8.	Poiščite, kateri uporabniki so včlanjeni v skupino sudo (kot sekundarno skupino)!
+	cat /etc/group | grep sudo
+
+9.	V katere skupine je včlanjen uporabnik administrator?
+	groups tim
+
+10.	Katera je primarna skupina uporabnika administrator?
+	id tim
+
+11.	S pomočjo ukaza useradd ustvarite novega uporabnika miha (polno ime Miha Krajnc) skupaj z domačim imenikom /home/miha. V ukazu podajte tudi geslo.
+	sudo useradd -c &quot;Miha Krajnc&quot; -d /home/miha -m -p $(mkpasswd -m sha-512) miha
+
+	-m ustvari direktorij /home/miha (isto kot mkdir)
+	Geslo moramo kriptirati zato odpremo lupino in napišemo
+	- sudo apt install whois
+	- mkpasswd miha (ni preveč dobro zakriptirano)
+	- mkpasswd -m sha-256 miha
+	če damo v oklepaje izvedemo ukaz v podlupini
+
+12.	Prijavite se kot uporabnik miha in preverite, če ste prijavljeni in pojdite v domači imenik uporabnika. 
+	- su miha
+	- whoami
+	- cd ~
+
+13.	Ustvarite skupino uporabniki in vanjo včlanite uporabnika miha (uporabniki naj bo njegova sekundarna skupina). Prav tako uporabnika miha včlanite v skupino student.
+	- sudo groupadd uporabniki
+	- sudo usermod -a -G uporabniki miha
+	- sudo usermod -a -G student miha
+	a (appenda k obstoječim skupinam, da pripada tudi teli skupini)
+
+14.	Uporabniku miha dodajte pravice za izvajanje ukazov kot root (naj postane t.i. sudoer).
+	- sudo usermod -a -G sudo miha
+
+15.	Uporabniku miha onemogočite možnost prijave v sistem.
+	sudo passwd -l miha - doda ! pred geslo, zaklene račun
+	sudo passwd -u miha (ga nazaj odklenemo)
+
+Naloge (2)
+
+1. Kot uporabnik miha ustvarite datoteko ~/vaje/test.txt. Kakšne pravice nad to datoteko imajo posamezni uporabniki? Preizkusite spreminjati vsebino datoteke kot drug uporabnik.
+	chmod 777 (r=4, w=2, x=1)
+	- su - miha
+	- mkdir vaje
+	- touch vaje/test.txt
+	- cd vaje
+	- -rw-rw-r--
+
+2. Vsem uporabnikom omogočite pisanje v datoteko test.txt.
+	- chmod a+w test.txt (tudi +w dela)
+
+3. Ostalim uporabnikom (razen sebi in skupini) vzemite bralne in pisalne pravice nad datoteko test.txt.
+	- chmod o-rw test.txt
+
+4. Omogočite, da bo uporabnik student (brez administratorskih pravic) poleg vas (uporabnik miha) lahko pisal in bral vašo datoteko, ostali uporabniki v splošnem pa ne.
+	- sudo chgrp student test.txt
+
+5. Vsem uporabnikom odvzemite vse pravice nad datoteko ter prenesite lastništvo in skupino datoteke na uporabnika administrator. Ali lahko kot uporabnik miha pogledate in spreminjate vsebino datoteke? Ali jo lahko zbrišete? Zakaj?
+	
+
+6. Kako bi poskrbeli, da lahko v imenik vaje vsi uporabniki shranjujejo in brišejo svoje datoteke, ne morejo pa brisati datotek ostalih uporabnikov?
+	- chmod -r u+w,g+w,o-w vaje
+
+Naloge (3)
+
+1. Napišite skripto, ki preveri, ali smo skripto pognali kot skrbnik sistema "superuporabnik" (angl. superuser)! Če nismo, izpiše opozorilo in se zaključi. Če smo, požene ukaz, ki izpiše zadnjih 5 uspešnih in 5 neuspešnih prijav v sistem.
+	#!/bin/bash
+	test $(whoami) = root
+	test $? -eq 0 && last && lastb || echo super user
+
+2. V spremenljivko okoljsko spremenljivko PATH dodajte imenik, kjer se trenutno nahajate (ne trenutni imenik v splošnem) in podimenik vaje v vašem domačem imeniku!
+	#!/bin/bash
+	test $(whoami) = root && last && lastb || echo "Nisi sudo!"
+	- namesto whoami lahko id -u je boljpe za skripte kot whoami
+

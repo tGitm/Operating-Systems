@@ -1,0 +1,101 @@
+Preden smo zacel reševat naloge nam je pokazal razne ukaze:
+------------------------------------------------------------
+id
+id simon
+id -u simon
+stat
+ls
+stat
+stat preveri
+stat preveri.sh
+ls -l
+$a
+echo $A
+echo $a
+a=abdofgdj
+echo ${a:1}
+echo ${a:2}
+echo ${a:2:2}
+x="To je test, 123, 123."
+echo $x
+echo ${x#* }
+echo ${x##* }
+echo ${x%* }
+echo ${x% * }
+echo ${x% *}
+echo ${x%% *}
+test -f /etc/blabla && { cp /etc/blabla .; echo "koncano."; } || { echo "Datoteka ne obstaja"; }
+expr 1 + 2
+expr 1-2
+expr 1 - 2 + 3
+type -a expr
+$((1 - 2))
+echo $((1 - 2))
+echo $((1-2))
+echo $((1-2+3))
+echo $((1*3))
+true
+true -a
+true
+echo $?
+type -a true
+-x je debugger  FUN FACT OF THE DAY
+
+
+
+
+
+
+
+
+
+1. Napišite skripto v Bashu, ki naredi trdo povezavo na datoteko, ki jo podamo kot prvi argument ob klicu.
+Povezavo naredi v trenutnem imeniku in naj se imenuje enako kot izvorna datoteka, 
+ce pa izvorna datoteka ne obstaja, pa naj se ustvari prazna datoteka z istim imenom v trenutnem imeniku.
+
+
+
+
+
+2. S pomocjo (a) zanke for in (b) zanke while napišite skriptni program, ki bo štel od 1 do 500 v enosekundnih intervalih. 
+
+
+
+----
+seq 1 500
+...
+nano ustvari4.sh
+----
+#!/bin/bash
+for dots in $(seq 1 500); do
+echo "$dots"
+sleep 1
+done
+----
+chmod +x ./preveri4.sh
+./preveri4.sh
+
+
+
+
+3. Napišite skripto, ki bo združila vse navadne datoteke iz trenutnega imenika v pakete tar.
+V posameznem paketu naj bodo vse datoteke, ki imajo prvih n crk imena istih.
+Ime paketa naj bo sestavljeno iz prvih skupnih n crk in koncnice tar. Število crk n podamo kot argument skripte. 
+
+
+
+
+4. Napišite skripto, ki bo združila vse navadne datoteke iz trenutnega imenika v pakete tar.
+ V posameznem paketu naj bodo vse datoteke, ki imajo isto koncnico (torej imajo isti niz za zadnjo piko).
+ Ime paketa naj bo ime koncnice. Ce koncnice ni, napišite null.
+
+
+
+
+
+5. Napišite skripto, ki bo v podanem imeniku izpisala vse mehke povezave, 
+ki ne kažejo na neko koncno datoteko ali imenik (v verigi povezav manjka kakšen clen ali pa ciljna datoteka ne obstaja). 
+Za vsako takšno povezavo naj skripta izpiše verigo povezav do clena, ki manjka. 
+Imenik skripta prejme tako, da uporabniku izpiše poziv in caka, da uporabnik vpiše imenik. 
+Ko skripta obdela podani imenik in izpiše problematicne mehke povezave, ponovno izpiše uporabniku poziv za vpis novega imenika itd. 
+Ce uporabnik ne vpiše imenika v petih sekundah, se skripta ustavi.

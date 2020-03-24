@@ -1,0 +1,53 @@
+﻿#!/bin/bash 
+
+FILENAME=$1
+
+
+dlongest=0
+while read -r line; do
+
+
+
+
+spermenljivka=$line
+bbbatagelj=""
+
+
+w2=${#spermenljivka}
+let w2+=1
+concat=''
+while [ $w2 -gt -1 ]
+do 
+    concat=$concat${spermenljivka:$w2:1}
+    let w2--
+done
+if [ $concat == $line ]
+    then
+    if [ $dlongest -le ${#concat} ]
+    then 
+        let dlongest=${#concat}
+        bbbatagelj=$concat
+    fi
+fi
+    done <$FILENAME
+
+
+#!/bin/bash
+velikost=0
+datoteka="$1"
+
+for vrstica in $( rev "$datoteka" ); do
+    grep -Ew "$vrstica" "$datoteka" > /dev/null
+
+    if [[ $? -eq 0 ]]; then
+
+        if [[ ${#vrstica} -gt $velikost ]]; then
+            velikost=${#vrstica}
+            beseda=$vrstica
+        fi
+    else
+        exit 1
+    fi
+done
+
+echo $beseda

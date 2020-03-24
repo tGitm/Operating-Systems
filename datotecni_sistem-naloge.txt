@@ -1,0 +1,142 @@
+﻿Naloge (1)
+
+1. Preverite, ali se nahajate v vašem domačem imeniku (/home/student)! V nasprotnem primeru pojdite v vaš domači imenik!
+pwd
+
+2. Izpišite vsebino imenika!
+ls
+
+3. V imeniku so tu tudi skrite datoteke. Izpišite jih! 
+ls -a
+
+4. Pojdite v korenski imenik diska: 
+	a. Z zaporedjem ukazov
+		cd ..
+	b. Z absolutnim naslavljanjem (1 ukaz)
+		cd /
+	c. Z relativnim naslavljanjem (1 ukaz)
+		cd ../..
+
+5. Iz korenskega imenika se vrnite v domači imenik
+	a. Po korakih z zaporedjem ukazov
+		cd home cd tim
+	b. Z absolutnim naslavljanjem
+		cd /home/tim
+	c. Z relativnim naslavljanjem
+		cd home/tim
+	d. Na najkrajši možni način
+		cd ~
+
+6. Iz domačega imenika pojdite v imenik /etc/init.d
+	a. Z zaporedjem ukazov
+		cd etc cd init.d 
+	b. Z absolutnim naslavljanjem
+		cd/etc/init.d
+	c. Z relativnim naslavljanjem
+		cd etc/init.d
+
+7. Z ukazom ls izpišite vsebino korenskega imenika in rekurzivno vsebino vseh podimenikov korenskega imenika.
+	cd ~	ls -R	ls -recursive
+
+
+8. V obliki drevesa izpišite vsebino korenskega imenika in rekurzivno vsebino vseh podimenikov korenskega imenika do globine 2. Enkrat izpišite vse zapise v imenikih, enkrat samo imenike.
+	tree -d -L 2
+
+
+
+
+Naloge (2)
+
+1. V vašem domačem imeniku ustvarite podimenik vaje! 
+
+Izhodišče za naslednje naloge podimenik vaje v vašem domačem imeniku.
+mkdir vaje
+
+2. Ustvarite podimenike OS, os in Os! 
+mkdir OS mkdir os mkdir Os
+
+3. Ustvarite podimenik operacijski sistemi!
+mkdir "operacijski sistemi"
+
+4. V imeniku os ustvarite podimenik test, pri čemer ukaz izvedete iz imenika vaje.
+mkdir os/test
+
+5. Z enim ukazom odstranite celotno pot os/test!
+rmdir -p os/test
+
+6. Ustvarite datoteko vaje.txt! Namig: uporabite ukaz touch.
+touch vaje.txt
+
+7. Kaj je glavna naloga ukaza touch?
+- ustvaru file
+
+8. Prekopirajte vaje.txt v podimenik OS!
+cp vaje.txt OS
+
+9. Prekopirajte vaje.txt še enkrat v podimenik OS, vendar tokrat datoteko hkrati preimenujte v vaje2.txt!
+cp vaje.txt OS/vaje.txt
+
+10. Datoteko vaje.txt v imeniku vaje preimenujte v vaje3!
+mv vaje.txt vaje3
+
+11. V imeniku vaje poskusite ustvariti podimenik vaje3.
+- ne moremo
+
+12. Datoteko vaje3 v imeniku vaje skopirajte v datoteko test3.txt (prav tako v imeniku vaje)! 
+cp vaje3 test3.txt
+
+13. Iz imenika OS z enim ukazom prekopirajte vse datoteke v imenik Os!
+cs OS/* Os
+
+14. Imenik Os v celoti prestavite v imenik OS (Os bo sedaj podimenik OS)!
+mv Os OS
+
+15. Vsebino celotnega imenika OS z vsemi podimeniki z enim ukazom prekopirajte v imenik operacijski sistemi!
+cp OS -r operacijski\ sistemi/
+
+16. Iz imenika vaje z enim ukazom izbrišite vse datoteke, ki vsebujejo številko 3! Brisanje izvedite tako, da je potrebno brisanje vsake datoteke potrditi.
+rm -i *3*
+
+
+
+
+Naloge (3)
+
+1. Napišite skripto ustvari.sh, ki v podanem imeniku (imenik podamo kot prvi argument) ustvari datoteke test1.txt, test2.txt in test3.txt! Skripto poženite z imenikom vaje kot argument. Znotraj skripte so argumenti, ki smo jih podali, shranjeni v spremenljivkah $# (kjer # pomeni zaporedno številko argumenta – prvi argument npr. dobimo v spremenljivki $1). V ustvarjene datoteke napišite poljubno vsebino (gedit, vi). 
+touch ustvari.sh
+nano ustvari.sh
+
+#!/bin/bash
+touch "$1"/test1.txt "$1"/test2.txt "$1"/test3.txt
+
+chmod +x ustvari.sh
+ls -l
+./ustvari.sh .                        /home/administrator/vaje/ustvari.sh .
+tree
+
+
+
+echo $PATH
+
+2. Ustvarite mehko povezavo konfiguracije na imenik /etc! Preverite, če povezava deluje! Kako to preverite?
+ls -s /etc konfiguracije
+readlink konfiguracije
+/bin/pwd
+
+3. Ustvarite mehko povezavo z imenom simbolp na test1.txt! Spreminjajte vsebino datoteke test1.txt in simbolp!
+
+
+4. Zbrišite datoteko test1.txt! Preverite, kako deluje povezava.
+
+5. Ustvarite trdo povezavo z imenom trdap na test2.txt! Spreminjajte vsebino datoteke test2.txt in trdap!
+
+6. Zbrišite datoteko test2.txt! Preverite, kako deluje povezava.
+
+7. Ustvarite trdo povezavo test2.txt na datoteko trdap!
+
+8. S pomočjo ukaza stat poglejte, na katere inode kažejo datoteke test2.txt, test3.txt in trdap!
+
+9. S pomočjo ukaza ls za vsak zapis (tudi za skrite) poiščite, koliko zapisov na datotečnem sistemu kaže na isti inode.
+
+10. Koliko prostora zavzame na disku jedro linuxa? Kako lahko to pogledamo?
+
