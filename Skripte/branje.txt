@@ -1,0 +1,35 @@
+Branje vhoda: ukaz read
+
+Omogoča interakcijo z uporabnikom, tako da bere iz standardnega vhoda.
+
+#!/bin/bash
+# prebere ime uporabnika in izpiše dobrodošlico
+echo -n "Vpisi svoje ime: "
+read user_name
+echo "Pozdravljen $user_name!"
+popravljen primer:
+
+#!/bin/bash
+# prebere ime uporabnika in izpiše dobrodošlico
+echo -n "Vpisi svoje ime: "
+read user_name
+# ce uporabnik nic ne vnese:
+if [ -z "$user_name" ]; then
+   echo "Nisi mi povedal svojega imena!"
+   exit 10
+fi
+echo "Pozdravljen $user_name"
+exit 0
+
+Če na standardni vhod preusmerimo datoteko, bo read bral datoteko vrstico za vrstico.
+
+datoteka=$1
+while read vrstica; do 
+    echo $vrstica
+done < $datoteka
+ali pa
+
+datoteka=$1
+cat $datoteka | while read vrstica; do 
+   echo $vrstica
+done
