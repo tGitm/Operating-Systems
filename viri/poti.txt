@@ -1,0 +1,2 @@
+/home/tim/Documents/Faks/semester2/Operating-Systems/viri/zivali.txt
+/home/tim/Documents/Faks/semester2/Operating-Systems/viri/izpis.txt
