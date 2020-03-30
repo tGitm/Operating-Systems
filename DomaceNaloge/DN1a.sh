@@ -7,3 +7,4 @@ if [ "$2" == '' ]; then
 else
     echo "$sorted" > "$outputFIle"
 fi
+exit
