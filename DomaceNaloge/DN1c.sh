@@ -1,6 +1,7 @@
 #!/bin/bash
 imenik1="$1"
 imenik2="$2"
+#$(find $imenik1 -type d) > dat.txt
 
 if [[ "$imenik2" != '' ]]; then
     cd "$imenik1" && find . -type d -exec mkdir -p -- "$imenik2"{} \;
