@@ -6,15 +6,15 @@ while getopts 'u:-superuser:' OPT; do
     esac
 done
 
-echo "Vnesite geslo za uporabnika $username"
-read -s pass
+read -s -p "Vnesite geslo za uporabnika $username" pass
+#read -s pass
 #echo $pass
 #spodaj ustvarim uporabnika, z domačim imenikom /home/uporabniško_ime
 uporabnik=$(useradd -m -d /home/$ap $ap)
 
 if [[ "$bp" != '' ]]; then
-    #echo "skripta naredi uporabnika superuserja"
-    usermod -a -G sudo "$uporabnik"
+    #echo "skripta doda uporabnika v sudo skupino"
+    usermod -aG sudo "$ap"
 fi
 if [[ $? -eq 0 ]]; then
     echo "Uporabnik $ap ustvarjen."
