@@ -1,6 +1,6 @@
 #!/bin/bash
-while getopts 'u:-superuser:' OPT; do
-    case $OPT in
+while getopts 'u:-superuser:' OPTION; do
+    case $OPTION in
         u) ap=$OPTARG;;
         -superuser) bp=$OPTARG;;
     esac
@@ -10,7 +10,7 @@ read -s -p "Vnesite geslo za uporabnika $username" pass
 #read -s pass
 #echo $pass
 #spodaj ustvarim uporabnika, z domačim imenikom /home/uporabniško_ime
-uporabnik=$(useradd -m -d /home/$ap $ap)
+uporabnik=$(sudo useradd -m -p $(mkpasswd "$pass" --method=SHA-512) -d /home/$ap $ap)
 
 if [[ "$bp" != '' ]]; then
     #echo "skripta doda uporabnika v sudo skupino"

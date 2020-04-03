@@ -1,18 +1,20 @@
 #!/bin/bash
 imenik1="$1"
 imenik2="$2"
-#$(find $imenik1 -type d) > dat.txt
 
-if [[ "$imenik2" != '' ]]; then
-    cd "$imenik1" && find . -type d -exec mkdir -p -- "$imenik2"{} \;
-    echo find . -type d
-    if [ $? -eq 0 ];then
-        ln -s "$imenik1" "škorenj"
-    else
-        exit 21
-    fi
-
-    exit 0
-else
+#če ni dveh argumentov vrnem 21
+if [[ "$#" -ne 2 ]];then
     exit 21
 fi
+
+if [[ "$#" -eq 2 ]]; then
+    #kopira vse imenike in podimenike brez datotek ampak samo direktorije
+    rsync -a -f"+ */" -f"- *" "$imenik1"/ "$imenik2"
+    chmod -r 550 "$imenik2"
+    chmod 1100 "$imenik2"
+    #echo find . -type d
+    ln -s "$imenik2" $HOME/škorenj
+    exit 0
+fi
+
+

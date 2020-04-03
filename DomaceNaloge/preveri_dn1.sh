@@ -12,6 +12,10 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     echo "Poženi me kot sudo!"
     exit 2
 fi
+if [[ $(which tree; echo $?) -ne 0 ]]; then
+    echo "Programa tree ni na sistemu. Namesti tree z ukazom 'sudo apt install tree'."
+    exit 3
+fi
 clear
 
 iniDir=$(pwd)
