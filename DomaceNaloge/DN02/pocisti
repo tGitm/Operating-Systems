@@ -1,0 +1,267 @@
+#!/bin/bash
+#rm -rf out
+mkdir -p "./out"
+ if [[ -d "$1" ]]; then
+    podan_imenik="$1"
+    imenik=1
+    shift
+
+elif [[ "$1" = "-s" || "$1" = "-d" || "$1" = "-t" || "$1" = "-o" ]]; then
+    podan_imenik="./"
+else
+    echo "Napaka, imenik ne obstaja!" >&2
+fi   
+
+#branje stikal in argumentov
+for argument in "$@"; do
+    case $argument in 
+        -s)
+        SIZE=1
+        shift
+        
+        re='^[0-9]+$'
+        if [[ ! "$1" =~ $re ]]; then
+            echo "Ni numerična vrednost!" >&2
+            exit 1
+        else 
+            velikost="$1"
+        fi
+        shift        
+        ;;
+
+        -t)
+        TIME=1
+        shift
+
+        re='^[0-9]+$'
+        if [[ ! "$1" =~ $re ]]; then
+            echo "Ni numerična vrednost!" >&2
+            exit 1
+        else 
+            velikost_t="$1"
+        fi
+        shift  
+        ;;
+        
+        -d)
+        FORMAT=1
+        shift
+
+        re='^[0-9]+$'
+        if [[ ! "$1" =~ $re ]]; then
+            echo "Ni numerična vrednost!" >&2
+            exit 1
+        else 
+            velikost_d="$1"
+        fi
+        shift  
+        ;;
+
+        -o)
+        OUT=1
+        shift
+        velikost_o="$1"
+        shift 
+        ;;
+    esac
+done
+
+declare -a stevke   #deklaracija tabele
+declare -a skupno_velikosti    #deklaracija tabele
+declare -A timtimtim
+
+function imenik() {
+    imenik="$1"
+    ime=$(basename "$imenik")
+
+    koncnica=${ime##*.}
+    #echo "$koncnica"
+
+    #preverjanje, če ima ime končnico
+    pika="."
+    if [[ "$ime" == *"$pika"* ]]; then
+        ima_koncnico=1
+    else
+        ima_koncnico=0    
+    fi
+    
+    do_imenika=$(readlink -f "$imenik")
+    do_imenika2=${do_imenika%"/$ime"}
+    do_imenika3=${do_imenika%"/$ime"}
+
+
+    velikost=$(du -k "$do_imenika" | cut -f1); velikost=$(($velikost/1024))
+    
+    #skupno_velikosti+=("$velikost")
+
+    nazadnje_urejeno=$(stat -c '%y' "$do_imenika" | cut -d' ' -f1); nazadnje_urejeno=$(date -d "$nazadnje_urejeno" +%s)
+    trenuten_cas=$(date '+%Y-%m-%d'); trenuten_cas=$(date -d "$trenuten_cas" +%s)
+    nazadnje_dostopano=$(stat -c '%x' "$do_imenika" | cut -d' ' -f1); nazadnje_dostopano=$(date -d "$nazadnje_dostopano" +%s)
+
+    #koda za stikalo -d
+        if [[ FORMAT -eq 1 ]]; then
+            #for i in "${stevke[@]}"; do
+            #   for j in $(seq 3 $velikost_d); do
+            #      stevke=("0" "${stevke[@]}")
+            # done
+            #done
+            nicle=$(printf "%."$velikost_d"d" "$velikost")
+        else 
+            nicle=$(printf "%.4d" "$velikost")
+        fi
+        #echo "$stevke"
+
+    #v primeru podanega -t stikala
+    if [[ TIME -eq 1 ]]; then
+        st_dni=0
+        if [[ $nazadnje_dostopano -le $nazadnje_urejeno ]];then
+            med_razlika=$(( $trenuten_cas - $nazadnje_urejeno ))
+            st_dni=$(echo "($med_razlika + 86400 - 1) / 86400" | bc)
+        else
+            med_razlika=$(( $trenuten_cas - $nazadnje_dostopano ))
+            st_dni=$(echo "($med_razlika + 86400 - 1) / 86400" | bc)
+        fi
+
+        if [[  st_dni -ge "$velikost_t" ]]; then
+            echo -n "$ime "
+            echo -n "$do_imenika3 "
+            echo -n "($velikost MB) "
+            echo "($st_dni)"
+
+            IFS=$'\n'
+            stevke+=("$ime $do_imenika3 ($velikost MB) ($st_dni)")
+            skupno_velikosti+=("$velikost")
+
+            #izpis v out imenik
+            $(cd ./out && ln -s "$do_imenika2" "$nicle-$ime") 
+        fi
+
+    else
+        
+        dnevi=0
+        if [[ $nazadnje_dostopano -le $nazadnje_urejeno ]];then
+            razlika=$(( $trenuten_cas - $nazadnje_urejeno ))
+            dnevi=$(echo "($razlika + 86400 - 1) / 86400" | bc)
+        else
+            razlika=$(( $trenuten_cas - $nazadnje_dostopano ))
+            dnevi=$(echo "($razlika + 86400 - 1) / 86400" | bc)
+        fi
+        echo -n "$ime "
+        echo -n "$do_imenika3 "
+        echo -n "($velikost MB) "
+        echo "($dnevi)"
+
+        IFS=$'\n'
+        stevke+=("$ime $do_imenika3 ($velikost MB) ($dnevi)")
+        skupno_velikosti+=("$velikost")
+
+        #delanje simboličnih povezav za vsak element tabele v imenik out
+        #for i in "${stevke[@]}"; do
+        
+        #izpis v imeniik out
+        #if [[ "$OUT" -ne 1 ]]; then
+        #    $(cd ./out && ln -s "$do_imenika2" "$nicle-$ime")
+        #fi
+        #done        
+    fi
+
+    if [[ "$TIME" -eq 1 ]]; then
+        if [[  st_dni -ge "$velikost_t" ]]; then
+            if [[ "$OUT" -eq 1 && "$velikost_o" == "type" ]]; then  #argument type!
+                if [[ "$ima_koncnico" -eq 1 ]]; then
+                    if [[ -z "${timtimtim[$koncnica]}" ]]; then
+                        timtimtim["$koncnica"]="$velikost"
+                    else
+                        popo="${timtimtim[$koncnica]}" 
+                        popo=$(($popo + "$velikost")) 
+                        timtimtim["$koncnica"]="$popo"
+                    fi 
+
+                    if [[ -d ".out/$koncnica" ]]; then
+                        $(cd ./out/$koncnica && ln -s "$do_imenika2" "$nicle-$ime")  
+                    else
+                        mkdir -p "./out/$koncnica"
+                        $(cd ./out/$koncnica && ln -s "$do_imenika2" "$nicle-$ime")
+                    fi    
+                else
+                    #ni končnice
+                    $(cd ./out && ln -s "$do_imenika2" "$nicle-$ime")
+                fi
+            #else #argument število!
+
+            fi
+        fi
+    else 
+        if [[ "$OUT" -eq 1 && "$velikost_o" == "type" ]]; then  #argument type!
+            if [[ "$ima_koncnico" -eq 1 ]]; then
+                if [[ -z "${timtimtim[$koncnica]}" ]]; then
+                     timtimtim["$koncnica"]="$velikost"
+                else
+                    popo="${timtimtim[$koncnica]}" 
+                    popo=$(($popo + "$velikost")) 
+                    timtimtim["$koncnica"]="$popo"
+                fi 
+
+                if [[ -d ".out/$koncnica" ]]; then
+                    $(cd ./out/$koncnica && ln -s "$do_imenika2" "$nicle-$ime")  
+                else
+                    mkdir -p "./out/$koncnica"
+                    $(cd ./out/$koncnica && ln -s "$do_imenika2" "$nicle-$ime")
+                fi    
+                else
+                    #ni končnice
+                    $(cd ./out && ln -s "$do_imenika2" "$nicle-$ime")
+                fi
+            #else #argument število!
+        fi
+         if [[ "$OUT" -ne 1 ]]; then
+            $(cd ./out && ln -s "$do_imenika2" "$nicle-$ime")
+        fi
+    fi    
+}
+
+function Skupno() {
+    skupna_velikost=0
+    for i in "${skupno_velikosti[@]}"; do
+        skupna_velikost=$(( $skupna_velikost + "$i" ))
+    done
+
+    echo skupaj "$skupna_velikost MB"
+}
+
+
+if [[ "$SIZE" -eq 1 ]]; then
+    while read vrstica; do 
+        imenik "$vrstica"
+    done < <(find "$podan_imenik" -type f -size +"$velikost"M -print 2>/dev/null)
+    
+    echo ---
+
+    #for i in "${stevke[@]}"; do
+    #   echo "$i"
+    #done | sort -r | sort -n -t "(" -k 2
+
+    IFS=$'\n'
+    array=$(printf "%s\n" ${stevke[@]} | sort -n -r -t "(" -k 2)
+
+
+    for i in "${array[@]}"; do
+        echo "$i"
+    done
+
+    if [[ "$OUT" -eq 1 ]]; then
+        echo ---
+        for kljuc in ${!timtimtim[@]};do
+            echo "${kljuc} ${timtimtim[$kljuc]} MB"
+        done | sort -n -r -k 1 
+    fi
+
+
+    echo ---
+    Skupno
+    
+
+else
+    "Argument -s ni podan, argument je obvezen!" >&2
+    exit 1
+fi
