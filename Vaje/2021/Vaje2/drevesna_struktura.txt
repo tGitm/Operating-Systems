@@ -1,0 +1,55 @@
+﻿Izpis izbranih imenikov in datotečnih zapisov v imeniku
+
+/
+├── bin/
+│   ├── bash
+│   ├── cat
+│   ├── chmod
+│   ├── cp
+│   ├── ls
+│   └── pwd
+├── boot/
+│   ├── grub/
+│   └── vmlinuz-3.13.0-37-generic
+├── dev/
+├── etc/
+│   ├── init/
+│   ├── init.d/
+│   ├── passwd
+│   ├── shadow
+│   └── sudoers.d/
+│       └── README
+├── home/
+│   ├── administrator/
+│   │   ├── Desktop/
+│   │   ├── Documents/
+│   │   ├── skrita.sh
+│   │   └── Public/
+│   └── student/
+│       ├── Desktop/
+│       ├── Documents/
+│       │   └── navodila.pdf
+│       └── Public/
+├── lib/
+├── lost+found/
+├── media/
+├── mnt/
+├── opt/
+├── proc/
+├── root/
+├── sbin/
+├── srv/
+├── sys/
+├── tmp/
+├── usr/
+│   ├── bin/
+│   ├── doc/
+│   ├── include/
+│   ├── lib/
+│   ├── local/
+│   │   └── bin/
+│   ├── sbin/
+│   └── src/
+├── var/
+└── vmlinuz -> boot/vmlinuz-3.13.0-37-generic
+

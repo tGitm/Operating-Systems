@@ -1,0 +1,66 @@
+﻿Naloge (1)
+
+1. Preverite, ali se nahajate v vašem domačem imeniku (/home/student)! V nasprotnem primeru pojdite v svoj domači imenik!
+
+2. Izpišite vsebino imenika!
+
+3. V imeniku so tu tudi skrite datoteke. Izpišite jih! 
+
+4. Pojdite v korenski imenik diska: 
+	a. z zaporedjem ukazov;
+	b. z absolutnim naslavljanjem (1 ukaz);
+	c. z relativnim naslavljanjem (1 ukaz).
+
+5. Iz korenskega imenika se vrnite v domači imenik:
+	a. po korakih z zaporedjem ukazov;
+	b. z absolutnim naslavljanjem;
+	c. z relativnim naslavljanjem;
+	d. na najkrajši možni način.
+
+6. Iz domačega imenika pojdite v imenik /etc/init.d
+	a. z zaporedjem ukazov;
+	b. z absolutnim naslavljanjem;
+	c. z relativnim naslavljanjem.
+
+7. Z ukazom ls izpišite vsebino korenskega imenika in rekurzivno vsebino vseh podimenikov korenskega imenika.
+
+8. V obliki drevesa izpišite vsebino korenskega imenika in rekurzivno vsebino vseh podimenikov korenskega imenika do globine 2. Enkrat izpišite vse zapise v imenikih, enkrat samo imenike.
+
+
+
+
+Naloge (2)
+
+1. V vašem domačem imeniku ustvarite podimenik vaje. 
+
+Izhodišče za naslednje naloge podimenik vaje v vašem domačem imeniku.
+
+2. Ustvarite podimenike OS, os in Os. 
+
+3. Ustvarite podimenik operacijski sistemi.
+
+4. V imeniku os ustvarite podimenik test, pri čemer ukaz izvedete iz imenika vaje.
+
+5. Z enim ukazom odstranite celotno pot os/test.
+
+6. Ustvarite datoteko vaje.txt. Namig: uporabite ukaz touch.
+
+7. Kaj je glavna naloga ukaza touch?
+
+8. Prekopirajte vaje.txt v podimenik OS.
+
+9. Prekopirajte vaje.txt še enkrat v podimenik OS, vendar tokrat datoteko hkrati preimenujte v vaje2.txt.
+
+10. Datoteko vaje.txt v imeniku vaje preimenujte v vaje3.
+
+11. V imeniku vaje poskusite ustvariti podimenik vaje3.
+
+12. Datoteko vaje3 v imeniku vaje skopirajte v datoteko test3.txt (prav tako v imeniku vaje). 
+
+13. Iz imenika OS z enim ukazom prekopirajte vse datoteke v imenik Os.
+
+14. Imenik Os v celoti prestavite v imenik OS (Os bo sedaj podimenik OS).
+
+15. Vsebino celotnega imenika OS z vsemi podimeniki z enim ukazom prekopirajte v imenik operacijski sistemi.
+
+16. Iz imenika vaje z enim ukazom izbrišite vse datoteke, ki vsebujejo številko 3. Brisanje izvedite tako, da je potrebno brisanje vsake datoteke potrditi.
