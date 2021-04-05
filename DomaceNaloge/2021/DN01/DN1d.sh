@@ -4,12 +4,13 @@ datoteka=$1
 
 while read line; do
     if [ -f "$line" ]; then
-        $size+=$(wc -c <"$line")
+        getSize=$(wc -c <"$line")
+        size=$(($size+$getSize))
     else
         echo "Napaka v inventarju!" >&1
-        exit 10
+        exit 10 #nastavim izhodni status 10
     fi
 done < $datoteka
 
 #izpis velikosti
-echo $size B >&1
+echo $size B >&1S
